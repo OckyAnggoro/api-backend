@@ -12,84 +12,50 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.app.jwtauthentication.security.services.UserCurrent;
+import com.app.model.User;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @SuppressWarnings("serial")
+@Setter(AccessLevel.PROTECTED)
+@Getter(AccessLevel.PUBLIC)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable{
+public class BaseEntity<E> implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@JsonIgnore
-	@Column(name = "is_delete")
-	private Integer isDelete = 0;
-	
+	@Column(name = "deleted_at")
+	private Date deletedAt;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreatedDate
-	protected Date createdAt;
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Date createdAt;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@LastModifiedDate
-	protected Date updatedAt;
-	
+	@Column(name = "updated_at")
+	private Date updatedAt;
+
+	@LastModifiedBy
 	@Column(name = "updated_by")
-	protected Integer updatedBy;
-	
-	@Column(name = "created_by")
-	protected Integer createdBy;
+	private E updatedBy;
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+	@CreatedBy
+	@Column(name = "created_by", nullable = false, updatable = false)
+	private E createdBy;
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public Integer getIsDelete() {
-		return isDelete;
-	}
-
-	public void setIsDelete(Integer isDelete) {
-		this.isDelete = isDelete;
-	}
-
-	public Integer getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(Integer updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Integer getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
-	}
 }

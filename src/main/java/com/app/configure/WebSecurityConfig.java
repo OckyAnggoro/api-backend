@@ -60,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		// TODO Auto-generated method stub
 		http.cors().and().csrf().disable().authorizeRequests()
 		.antMatchers("/api/auth/**",
-				    // "/api/uom/**",
 					"/v2/api-docs",
 					"/configuration/ui",
 				     "/swagger-resources", 
@@ -70,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 				     "/swagger-resources/configuration/ui",
 					 "/ws/info", "/ws/**")
 		.permitAll().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

@@ -23,7 +23,7 @@ public class UomControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @Test
+   /* @Test
     void testAddEdit() throws Exception {
         RequestModel requestModel = new RequestModel();
         requestModel.setCode("1010501008000099");
@@ -31,5 +31,5 @@ public class UomControllerTest {
         ResponseEntity<Uom> responseEntity = this.restTemplate
                 .postForEntity("http://localhost:" + port + "/api/uom/add-edit", requestModel, Uom.class);
         assertEquals("1010501008000099", responseEntity.getBody().getCode());
-    }
+    }*/
 }

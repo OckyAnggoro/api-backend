@@ -3,9 +3,6 @@ package com.app.jwtauthentication.message.request;
 import java.util.Set;
 
 public class SignUpForm {
-	
-
-	private String nip;
 
 	private String userName;
 	
@@ -46,12 +43,6 @@ public class SignUpForm {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public String getNip() {
-		return nip;
-	}
-	public void setNip(String nip) {
-		this.nip = nip;
 	}
 	
 }

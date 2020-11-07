@@ -12,8 +12,8 @@ import com.app.model.Menu;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long>{
 	
-	@Query("SELECT menu FROM Menu menu, RoleMenu roleMenu WHERE menu.id = roleMenu.menu.id AND roleMenu.role.code in (:code) ")
-	List<Menu> findByRoleCode(@Param("code")String code);
+	@Query("SELECT menu FROM Menu menu, RoleMenu roleMenu WHERE menu.id = roleMenu.menu.id AND roleMenu.role.code in (:roleCode) ")
+	List<Menu> findByRoleCodeList(@Param("roleCode")List<String> roleCode);
 	
 	@Query("SELECT menu FROM Menu menu WHERE menu.id = :parentId")
 	Menu findById(@Param("parentId") Integer parentId);

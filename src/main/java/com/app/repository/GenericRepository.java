@@ -1,26 +1,23 @@
 package com.app.repository;
 
-import java.util.List;
-
-import com.app.base.TableRequest;
-import org.springframework.data.domain.Page;
+import com.app.base.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.app.AppConstant;
-import com.app.base.BaseEntity;
-import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
-public interface GenericRepository<E> extends JpaRepository<E, Integer> {
+public interface GenericRepository<E extends BaseEntity> extends JpaSpecificationExecutor<E>, JpaRepository<E, Integer> {
 
-	@Query("SELECT t FROM #{#entityName} t WHERE t.code = :code ")
-    E findByCode(@Param("code") String code);
+    @Transactional
+    @Modifying
+    @Query("UPDATE #{#entityName} e SET e.deletedAt = CURRENT_DATE WHERE e.id IN ?1")
+    void softDeleteByIds(List<Integer> ids);
 
-	@Query("SELECT t FROM #{#entityName} t WHERE t.isDelete = " + AppConstant.FLAG_NOT_DELETED)
-    List<E> findAll();
 
 }

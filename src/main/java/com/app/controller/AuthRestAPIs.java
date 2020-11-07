@@ -3,6 +3,7 @@ package com.app.controller;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -66,11 +67,12 @@ public class AuthRestAPIs {
 		
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		String roleCode = "";
-		for(GrantedAuthority grantedAuthority: userDetails.getAuthorities()) {
+		List<String> roleCodeList = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+		/*for(GrantedAuthority grantedAuthority: userDetails.getAuthorities()) {
 			roleCode += grantedAuthority.getAuthority();
-		}
-		List<Menu> treeMenu = menuService.findByRoleCode(roleCode);
+		}*/
+		System.out.println("Role code = " + roleCodeList);
+		List<Menu> treeMenu = menuService.findByRoleCodeList(roleCodeList);
 		//AuthenticationDTO authenticationDTO = new AuthenticationDTO(jwt, userDetails, treeMenu); Gak jadi liat nanti
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities(), treeMenu));
 	}
@@ -87,14 +89,14 @@ public class AuthRestAPIs {
 			return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use"), HttpStatus.BAD_REQUEST);
 		}
 		
-		User user = new User(signUpForm.getNip(), signUpForm.getName(), signUpForm.getUserName(),
+		User user = new User(signUpForm.getName(), signUpForm.getUserName(),
 				signUpForm.getEmail(), encoder.encode(signUpForm.getPassword()));
-		
+
 		Set<Role> roles = new HashSet<>();
 		Role role = new Role("Role User", "USER"); //default role User
 		roles.add(roleRepository.findByCode(role.getCode()));
-		
-		user.setRoles(roles);
+
+		// user.setRoles(roles);
 		userRepository.save(user);
 		return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
 	}

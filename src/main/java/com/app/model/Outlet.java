@@ -1,57 +1,29 @@
 package com.app.model;
 
 import com.app.base.BaseEntity;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Where;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+@Setter(AccessLevel.PUBLIC)
+@Getter(AccessLevel.PUBLIC)
 @Entity
+@Where(clause = "deleted_at IS NULL")
 @Table(name = "t2_outlet")
-public class Outlet extends BaseEntity {
+public class Outlet extends BaseEntity<String> {
 
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String latitude;
+    @Column(nullable = false)
     private String longitude;
-    private String Description;
-    private User userSales;
 
-    public String getName() {
-        return name;
-    }
+    private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getDescription() {
-        return Description;
-    }
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-    public User getUserSales() {
-        return userSales;
-    }
-
-    public void setUserSales(User userSales) {
-        this.userSales = userSales;
-    }
 }
