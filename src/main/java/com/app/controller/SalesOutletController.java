@@ -71,7 +71,7 @@ public class SalesOutletController extends BaseController{
             return new ResponseEntity(new Response<>("Record Not Found"), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(new Response<>(users.get()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(new Response<>(users.get()), HttpStatus.OK);
     }
 
     @PostMapping("/save")
@@ -86,6 +86,13 @@ public class SalesOutletController extends BaseController{
             return new ResponseEntity(new Response<>(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(new Response<>(salesOutSaved.size()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(new Response<>(salesOutSaved.size()), HttpStatus.OK);
+    }
+
+    @GetMapping("/findAllList")
+    public ResponseEntity<SalesOutlet> findAllList(){
+        List<SalesOutlet> salesOutletList = salesOutletService.findAllList();
+
+        return new ResponseEntity(new Response<>(salesOutletList), HttpStatus.OK);
     }
 }

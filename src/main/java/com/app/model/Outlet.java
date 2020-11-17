@@ -23,7 +23,7 @@ public class Outlet extends BaseEntity<String> {
     private String latitude;
     @Column(nullable = false)
     private String longitude;
-
     private String description;
+    private String iconUrl;
 
 }

@@ -36,7 +36,7 @@ public class ItemController extends BaseController{
 											 @RequestParam int limit,
 											 @RequestParam(required = false) String search){
 		// TableRequest tableRequest =  null;
-		Pageable pageable = PageRequest.of(page, limit, Sort.by("name"));
+		Pageable pageable = PageRequest.of(page, limit, Sort.by("id"));
 		GeneralSpecification specificationMatch = null;
 		Specification specification = null;
 
@@ -64,7 +64,7 @@ public class ItemController extends BaseController{
 		itemDTO.setItem(item.get());
 		itemDTO.setUomList(uomService.findAllList());
 
-		return new ResponseEntity<>(itemDTO, HttpStatus.OK);
+		return new ResponseEntity(new Response(itemDTO), HttpStatus.OK);
 	}
 
 	@GetMapping("/add")
@@ -72,7 +72,7 @@ public class ItemController extends BaseController{
 
 		ItemDTO itemDTO = new ItemDTO();
 		itemDTO.setUomList(uomService.findAllList());
-		return new ResponseEntity<>(itemDTO, HttpStatus.OK);
+		return new ResponseEntity(new Response(itemDTO), HttpStatus.OK);
 	}
 	
 	@PostMapping("/save")
